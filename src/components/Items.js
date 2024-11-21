@@ -52,9 +52,11 @@ function Items({items, setItems}) {
         rate: "",
         costPrice: "",
       });
+      
     } else {
       alert("Please fill in all fields before adding the item.");
     }
+    
   };
 
 

@@ -10,9 +10,20 @@ function Invoice() {
     issueDate: "",
     dueDate: "",
     shippingAddress: "",
+    comments:"",
   });
   const [items, setItems] = useState([]);
   const [submitClicked, setSubmitClicked] = useState(false)
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
 
   useEffect(() => {
     setSubmitClicked(false)
@@ -23,15 +34,33 @@ function Invoice() {
     setSubmitClicked(true)
     if (!formData.customerName||!formData.customerEmail||!formData.invoiceNumber) {
       alert("Please fill all required fields")
+      
+      // alert("Please fill atleast one row")
+      
       return
     }
+    if (items.length <= 0) {
+      alert("Please fill atleast one form");
+      return;
+  }
+    
     const mainPayload = {
       formData : formData,
       itemsData:items
     };
     console.log("mainPayload is:", mainPayload);
     alert("Form Submitted Successfully")
-    // You can send this data to an API or perform further actions
+    setItems([]);
+    setFormData({
+      customerName: "",
+    customerEmail: "",
+    invoiceNumber: "",
+    issueDate: "",
+    dueDate: "",
+    shippingAddress: "",
+    comments:"",
+    });
+    
   };
 
   return (
@@ -49,6 +78,9 @@ function Invoice() {
                   rows="4"
                   placeholder="Comments"
                   className="customer-message"
+                  name='comments'
+                  value={formData.comments}
+                  onChange={handleChange}
                 ></textarea>
               </div> </div>
               <div className="col-md-2 d-flex flex-column justify-content-end text-end align-items-end"> 
