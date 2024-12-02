@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import InvoiceDetails from './InvoiceDetails'
-import Items from './Items'
+import React, { useEffect, useState } from "react";
+import InvoiceDetails from "./InvoiceDetails";
+import Items from "./Items";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAppData } from "./AppContext";
 
 function Invoice() {
   const [formData, setFormData] = useState({
@@ -10,11 +12,12 @@ function Invoice() {
     issueDate: "",
     dueDate: "",
     shippingAddress: "",
-    comments:"",
+    comments: "",
   });
   const [items, setItems] = useState([]);
-  const [submitClicked, setSubmitClicked] = useState(false)
-
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const navigate = useNavigate();
+  const { mainPayload ,setmainPayload} = useAppData();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,51 +27,56 @@ function Invoice() {
     }));
   };
 
-
   useEffect(() => {
-    setSubmitClicked(false)
-  }, [formData])
-  
+    setSubmitClicked(false);
+  }, [formData]);
 
   const handleSubmit = () => {
-    setSubmitClicked(true)
-    if (!formData.customerName||!formData.customerEmail||!formData.invoiceNumber) {
-      alert("Please fill all required fields")
-      
-      // alert("Please fill atleast one row")
-      
-      return
+    setSubmitClicked(true);
+    if (
+      !formData.customerName ||
+      !formData.customerEmail ||
+      !formData.invoiceNumber
+    ) {
+      alert("Please fill all required fields");
+
+      return;
     }
     if (items.length <= 0) {
       alert("Please fill atleast one form");
       return;
-  }
-    
+    }
+
     const mainPayload = {
-      formData : formData,
-      itemsData:items
+      formData: formData,
+      itemsData: items,
     };
+    setmainPayload(mainPayload)
+    navigate("/invoicePreview");
     console.log("mainPayload is:", mainPayload);
-    alert("Form Submitted Successfully")
+    alert("Form Submitted Successfully");
     setItems([]);
     setFormData({
       customerName: "",
-    customerEmail: "",
-    invoiceNumber: "",
-    issueDate: "",
-    dueDate: "",
-    shippingAddress: "",
-    comments:"",
+      customerEmail: "",
+      invoiceNumber: "",
+      issueDate: "",
+      dueDate: "",
+      shippingAddress: "",
+      comments: "",
     });
-    
   };
 
   return (
     <>
-    <header className="Invoice">Invoice</header>
-    <InvoiceDetails formData={formData} setFormData={setFormData} submitClicked={submitClicked}/>
-    <Items items={items} setItems={setItems}/>
-    <div className="form-group customer-message-container mt-3 card mb-5">
+      <header className="Invoice">Invoice </header>
+      <InvoiceDetails
+        formData={formData}
+        setFormData={setFormData}
+        submitClicked={submitClicked}
+      />
+      <Items items={items} setItems={setItems} />
+      <div className="form-group customer-message-container mt-3 card mb-5">
         <div className="card-body">
           <div className="row justify-content-between">
             <div className="col-md-4">
@@ -78,22 +86,25 @@ function Invoice() {
                   rows="4"
                   placeholder="Comments"
                   className="customer-message"
-                  name='comments'
+                  name="comments"
                   value={formData.comments}
                   onChange={handleChange}
                 ></textarea>
-              </div> </div>
-              <div className="col-md-2 d-flex flex-column justify-content-end text-end align-items-end"> 
-                
-                <button className="btn btn-primary" onClick={handleSubmit}>Save</button>
-              </div>
-           
+              </div>{" "}
+            </div>
+            <div className="col-md-2 d-flex flex-column justify-content-end text-end align-items-end">
+              <button className="btn btn-primary" onClick={handleSubmit}>
+                Save
+              </button>{" "}<br></br>
+              <button className="btn btn-primary" onClick={() => {
+            navigate("/apiis");
+          }}> Apis</button>
+            </div>
           </div>
         </div>
       </div>
     </>
-
-  )
+  );
 }
 
-export default Invoice
+export default Invoice;
