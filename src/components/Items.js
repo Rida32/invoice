@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import InvoiceDetails from "./InvoiceDetails";
+
 
 
 
@@ -12,6 +15,7 @@ function Items({items, setItems}) {
     rate: "",
     costPrice: "",
   });
+  const navigate=useNavigate()
 
   // Update state on input change
   const handleInputChange = (e) => {
@@ -22,7 +26,7 @@ function Items({items, setItems}) {
     }));
   };
 
-  // Add new item to the items array
+  
   const addItem = () => {
     if (
       newItem.item &&
@@ -32,7 +36,7 @@ function Items({items, setItems}) {
       newItem.costPrice
     ) {
       const newItemData = {
-        id: items.length + 1, // Generate a new id
+        id: items.length + 1,
         item: newItem.item,
         description: newItem.description,
         qty: parseInt(newItem.qty),
@@ -44,7 +48,7 @@ function Items({items, setItems}) {
 
       setItems((prevItems) => [...prevItems, newItemData]);
 
-      // Reset input fields
+      
       setNewItem({
         item: "",
         description: "",

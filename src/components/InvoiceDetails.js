@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function InvoiceDetails({formData, setFormData,submitClicked}) {
  
@@ -10,6 +11,7 @@ function InvoiceDetails({formData, setFormData,submitClicked}) {
       [name]: value,
     }));
   };
+  const navigate=useNavigate()
 
 
   return (
