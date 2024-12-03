@@ -16,7 +16,7 @@ const Apiis = () => {
 
 
   const getdata = async () => {
-    
+ 
     try {
       const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
       console.log("data", res.data);
